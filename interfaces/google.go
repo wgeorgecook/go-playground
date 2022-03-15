@@ -3,21 +3,27 @@ package main
 import (
 	"fmt"
 )
+
 type gmail struct {
-	_type providerType
+	Provider
+}
+
+func (g gmail) String() string {
+	return "Gmail"
 }
 
 func NewGmail() gmail {
-	return gmail{
-		_type: GMAIL,
-	}
+	return gmail{}
 }
 
-func (g gmail) GetType() providerType {
-	return GMAIL
+func (g gmail) withAddress(s string) gmail {
+	return gmail{Provider{Address: s}}
 }
 
 func (g gmail) SendEmail(message string) error {
+	if g.Address == "" {
+		return noAddressError
+	}
 	fmt.Printf("%v\n", message)
 	return nil
 }
